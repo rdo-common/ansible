@@ -16,7 +16,7 @@
 Name: ansible
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: 2.9.27
-Release: 3%{?dist}
+Release: 4%{?dist}
 Epoch:   1
 
 License: GPLv3+
@@ -42,8 +42,8 @@ Patch4: ansible-2.9.23-sphinx4.patch
 # We used to have a ansible-python3 package that a number of other things
 # started depending on, so we should now provide/obsolete it until they 
 # can all adjust to just needing ansible.
-Provides:      ansible-python3 = %{version}-%{release}
-Obsoletes:     ansible-python3 < %{version}-%{release}
+Provides:      ansible-python3 = %{epoch}:%{version}-%{release}
+Obsoletes:     ansible-python3 < %{epoch}:%{version}-%{release}
 
 # Conflict with the ansible-base package for now.
 Conflicts: ansible-base > 2.10.0
@@ -142,7 +142,7 @@ This package installs extensive documentation for ansible
 
 %package -n ansible-test
 Summary: Tool for testing ansible plugin and module code
-Requires: %{name} = %{version}-%{release}
+Requires: %{name} = %{epoch}:%{version}-%{release}
 
 %description -n ansible-test
 Ansible is a radically simple model-driven configuration management,
@@ -276,6 +276,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Wed Feb 16 2022 Alfredo Moralejo <amoralej@redhat.com> - 1:2.9.27-3
+- Fix epoch in requires, provides and obsoletes
+
 * Wed Feb 16 2022 Alfredo Moralejo <amoralej@redhat.com> - 1:2.9.27-2
 - Bump epoch and obsolet ansible-core to avoid getting it in
 
