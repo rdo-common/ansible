@@ -16,7 +16,8 @@
 Name: ansible
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: 2.9.27
-Release: 2%{?dist}
+Release: 3%{?dist}
+Epoch:   1
 
 License: GPLv3+
 Source0: https://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
@@ -46,8 +47,8 @@ Obsoletes:     ansible-python3 < %{version}-%{release}
 
 # Conflict with the ansible-base package for now.
 Conflicts: ansible-base > 2.10.0
-# Conflict with the ansible-core package for now also.
-Conflicts: ansible-core > 2.11.0
+# Obsolete the ansible-core package for now also.
+Obsoletes: ansible-core > 2.11.0
 
 %if 0%{?with_tests}
 #
@@ -275,6 +276,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Wed Feb 16 2022 Alfredo Moralejo <amoralej@redhat.com> - 1:2.9.27-2
+- Bump epoch and obsolet ansible-core to avoid getting it in
+
 * Mon Oct 18 2021 Sandro Bonazzola <sbonazzo@redhat.com> - 2.9.27-2
 - Rebuilt for CentOS Virt SIG
 
