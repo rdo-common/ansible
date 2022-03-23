@@ -16,14 +16,11 @@
 Name: ansible
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: 2.9.27
-Release: 4%{?dist}
+Release: 5%{?dist}
 Epoch:   1
 
 License: GPLv3+
 Source0: https://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
-Source1: ansible.attr
-Source2: ansible-generator
-Source3: macros.ansible
 Url: http://ansible.com
 BuildArch: noarch
 
@@ -157,7 +154,6 @@ developed for ansible.
 
 %prep
 %autosetup -p1
-cp -a %{S:1} %{S:2} %{S:3} .
 
 %build
 
@@ -230,11 +226,6 @@ cp -pr docs/docsite/rst .
   cp -pr docs/docsite/_build/html %{_builddir}/%{name}-%{version}/html
 %endif
 
-install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
-install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
-install -Dpm0755 -t %{buildroot}%{_rpmconfigdir} ansible-generator
-
-
 %check
 %if 0%{?with_tests}
 ln -s /usr/bin/pytest-3 bin/pytest
@@ -259,9 +250,6 @@ make PYTHON=/usr/bin/python3 tests-py3
 %{python3_sitelib}/ansible
 %{python3_sitelib}/ansible_test
 %{python3_sitelib}/*egg-info
-%{_fileattrsdir}/ansible.attr
-%{_rpmmacrodir}/macros.ansible
-%{_rpmconfigdir}/ansible-generator
 %exclude %{_bindir}/ansible-test
 %exclude %{python3_sitelib}/ansible_test
 
@@ -276,6 +264,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Wed Mar 23 2022 Alfredo Moralejo <amoralej@redhat.com> - 1:2.9.27-5
+- Remove ansible packaging macros, included in ansible-packaging
+
 * Wed Feb 16 2022 Alfredo Moralejo <amoralej@redhat.com> - 1:2.9.27-3
 - Fix epoch in requires, provides and obsoletes
 
